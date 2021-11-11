@@ -1,0 +1,33 @@
+.profileInfo{
+  display: flex;
+  align-items: flex-start;
+  column-gap: 20px;
+  .profileImg{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  .contentBox{
+    display: flex;
+    flex-direction: column;
+  }
+  .name{
+    margin-bottom: 20px;
+  }
+  .templateText{
+    width: 160px;
+  }
+  .dataList{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+  }
+  .dataItem{
+    display: flex;
+    align-items: center;
+  }
+  .templateText{
+    font-weight: 700;
+  }
+
+}

@@ -1,0 +1,16 @@
+@import "../../scss/base/variables";
+
+.contentBox{
+  padding-top: 20px;
+  background-color: #FFFFFF;
+  .container{
+    padding: 20px 20px 0 20px;
+  }
+
+  .img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+}

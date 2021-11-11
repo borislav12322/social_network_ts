@@ -1,0 +1,24 @@
+@import "../../scss/base/variables";
+
+.messages{
+  padding-top: 20px;
+  .container{
+    @extend %container;
+    background-color: #FFFFFF;
+  }
+  .wrapper{
+    display: flex;
+    column-gap: 30px;
+  }
+
+  .messageNamesList{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+  .messagesContent{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+}
