@@ -4,8 +4,15 @@ import Background from '../../images/monterey_bg.jpeg';
 import {ProfileInfo} from "../profileInfo/ProfileInfo";
 import Photo from '../../images/profile_photo.png'
 import {Posts} from "../posts/Posts";
+import {PostsType, ProfilesPageType} from "../../../redux/state";
 
-export const Profile = () => {
+type PropsType = {
+    profile: ProfilesPageType
+    addPost: (postMessage: string) => void
+    changeTextAreaHandler: (newText: string) => void
+}
+
+export const Profile = (props:PropsType) => {
     return (
         <div className={s.contentBox}>
             <div className={s.container}>
@@ -19,7 +26,7 @@ export const Profile = () => {
                                  website={'https://www.borislav-web.ru/'}
                     />
 
-                    <Posts/>
+                    <Posts posts={props.profile.posts} message={props.profile.messageForNewPost} addPost={props.addPost} changeTextAreaHandler={props.changeTextAreaHandler}/>
                 </div>
             </div>
         </div>

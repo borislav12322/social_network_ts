@@ -1,80 +1,49 @@
 import React from "react";
 import s from './Messages.module.scss';
-import {NavLink} from "react-router-dom";
+import {DialogItem} from "../dialogItem/DialogItem";
+import {Message} from "../message/Message";
+import {MessagesPageType} from "../../../redux/state";
+import {Button} from "@mui/material";
 
-type DialogItemType = {
-    name: string
-    id: number
+
+type PropsType = {
+    messages: MessagesPageType
 }
 
-type MessageType = {
-    id: number
-    message: string
-}
+export const Messages = (props: PropsType) => {
 
-const DialogItem = (props: DialogItemType) => {
+    const onClickHandler = () => {
 
-    return (
-        <li className={s.messageNamesItem} key={props.id}>
-            <NavLink to={`/messages/${props.id}`} className={s.name}>
-                {props.name}
-            </NavLink>
-        </li>
-    )
-};
-
-const Message = (props: MessageType) => {
-    return (
-        <span className={s.message} key={props.id}>
-            {props.message}
-        </span>
-    )
-}
-
-export const Messages = () => {
-
-    const messagesData: Array<DialogItemType> = [
-
-        {id: 1 ,name: "Somi"},
-        {id: 2 ,name: "Nayeon"},
-        {id: 3 ,name: "Jeongyeon"},
-        {id: 4 ,name: "Momo"},
-        {id: 5 ,name: "Sana"},
-        {id: 6 ,name: "Jihyo"},
-        {id: 7 ,name: "Tzuyu"},
-        {id: 8 ,name: "Mina"},
-        {id: 9 ,name: "Dahyun"},
-        {id: 10 ,name: "Chaeyoung"},
-
-    ];
-
-    const messageContentData = [
-        {id: 1 ,name: "Hi!"},
-        {id: 2 ,name: "Twice!"},
-        {id: 3 ,name: "Cool!"},
-        {id: 4 ,name: "Somi!!!!!"},
-    ]
+    }
 
     return (
         <div className={s.messages}>
             <div className={s.container}>
                 <div className={s.wrapper}>
-                    <ul className={s.messageNamesList}>
+                    <div className={s.contentBox}>
+                        <ul className={s.messageNamesList}>
 
-                        {messagesData.map(item =>{
-                            return(
-                                <DialogItem id={item.id} name={item.name}/>
-                            )
-                        })}
+                            {props.messages.messagesData.map(item => {
+                                return (
+                                    <DialogItem key={item.id} id={item.id} name={item.name}/>
+                                )
+                            })}
 
-                    </ul>
-                    <div className={s.messagesContent}>
-                        {messageContentData.map(item =>{
-                            return(
-                                <Message id={item.id} message={item.name}/>
-                            )
-                        })}
+                        </ul>
+                        <div className={s.messagesContent}>
+                            {props.messages.messageContentData.map(item => {
+                                return (
+                                    <Message id={item.id} message={item.name}/>
+                                )
+                            })}
 
+                        </div>
+                    </div>
+                    <div className={s.textAreaMessageBox}>
+                        <textarea className={s.textAreaMessage}></textarea>
+                        <Button onClick={onClickHandler} variant="contained">
+                            Add Post
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -4,9 +4,12 @@ import s from './Post.module.scss';
 type PropsType = {
     avatar: string
     message: string
+    likesCount: number
+    id: number
+
 }
 
-export const Post = ({avatar,message ,...props}: PropsType) => {
+export const Post = ({avatar,message ,likesCount,...props}: PropsType) => {
     return (
         <div className={s.post}>
             <div className={s.contentBox}>
@@ -15,7 +18,7 @@ export const Post = ({avatar,message ,...props}: PropsType) => {
                     {message}
                 </span>
             </div>
-            <span className={s.likes}>0</span>
+            <span className={s.likes}>{likesCount}</span>
 
         </div>
     )

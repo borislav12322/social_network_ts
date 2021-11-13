@@ -6,9 +6,15 @@ import NewsImg from '../../images/news.png';
 import MusicImg from '../../images/music.png';
 import SettingsImg from '../../images/settings.png';
 import { NavLink } from "react-router-dom";
+import {FriendSidebarItem} from "../friendSidebarItem/FriendSidebarItem";
+import {SidebarSectionType} from "../../../redux/state";
+
+type PropsType = {
+    sidebar: SidebarSectionType
+}
 
 
-export const Sidebar = () =>{
+export const Sidebar = (props: PropsType) =>{
     return(
         <aside className={s.sidebar}>
             <div className={s.container}>
@@ -43,6 +49,10 @@ export const Sidebar = () =>{
                             <span className={s.menuText}>Settings</span>
                         </a>
                     </li>
+                    <li className={`${s.sidebarItem}  ${s.friendsSection}`}>
+                        <FriendSidebarItem friends={props.sidebar.friends}/>
+                    </li>
+
                 </ul>
             </div>
         </aside>
