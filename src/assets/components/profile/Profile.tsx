@@ -4,13 +4,12 @@ import Background from '../../images/monterey_bg.jpeg';
 import {ProfileInfo} from "../profileInfo/ProfileInfo";
 import Photo from '../../images/profile_photo.png'
 import {Posts} from "../posts/Posts";
-import {PostsType, ProfilesPageType} from "../../../redux/state";
+import {ProfilesPageType} from "../../../redux/state";
 
 type PropsType = {
     profile: ProfilesPageType
-    addPost: (postMessage: string) => void
-    changeTextAreaHandler: (newText: string) => void
-}
+    dispatch: (action: any) => void
+};
 
 export const Profile = (props:PropsType) => {
     return (
@@ -18,6 +17,7 @@ export const Profile = (props:PropsType) => {
             <div className={s.container}>
                 <div className={s.wrapper}>
                     <img className={s.img} src={Background} alt=""/>
+
                     <ProfileInfo photo={Photo}
                                  name={'Son Chaeyoung'}
                                  birthday={'11.12.1998'}
@@ -26,7 +26,11 @@ export const Profile = (props:PropsType) => {
                                  website={'https://www.borislav-web.ru/'}
                     />
 
-                    <Posts posts={props.profile.posts} message={props.profile.messageForNewPost} addPost={props.addPost} changeTextAreaHandler={props.changeTextAreaHandler}/>
+                    <Posts
+                        posts={props.profile.posts}
+                        message={props.profile.messageForNewPost}
+                        dispatch={props.dispatch}
+                    />
                 </div>
             </div>
         </div>

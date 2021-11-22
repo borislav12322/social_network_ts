@@ -9,8 +9,7 @@ import {stateType} from "./redux/state";
 
 type PropsType = {
     state: stateType
-    addPost: (postMessage: string) => void
-    changeTextAreaHandler: (newText: string) => void
+    dispatch: (action: any) => void
 }
 
 function App(props: PropsType) {
@@ -22,8 +21,25 @@ function App(props: PropsType) {
                     <Sidebar sidebar={props.state.sidebar}/>
                     <div className="wrapper">
                         <Routes>
-                            <Route path={'/profile'} element={<Profile profile={props.state.profile} addPost={props.addPost} changeTextAreaHandler={props.changeTextAreaHandler}/>}/>
-                            <Route path={'/messages'} element={<Messages messages={props.state.messages} />}/>
+                            <Route
+                                path={'/profile'}
+                                element={
+                                    <Profile
+                                        profile={props.state.profile}
+
+                                        dispatch={props.dispatch}
+                                    />}
+                            />
+
+                            <Route
+                                path={'/messages'}
+                                element={
+                                    <Messages
+                                        messages={props.state.messages}
+                                        dispatch={props.dispatch}
+                                        state={props.state}
+                                    />}
+                            />
                         </Routes>
                     </div>
                 </div>

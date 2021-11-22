@@ -1,19 +1,26 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import s from './Messages.module.scss';
 import {DialogItem} from "../dialogItem/DialogItem";
 import {Message} from "../message/Message";
-import {MessagesPageType} from "../../../redux/state";
+import {MessagesPageType, stateType} from "../../../redux/state";
 import {Button} from "@mui/material";
-
+import {sendNewMessageAC, updateNewMessageAC} from "../../../redux/messages-reducer";
 
 type PropsType = {
     messages: MessagesPageType
+    dispatch: (action: any) => void
+    state: stateType
 }
 
 export const Messages = (props: PropsType) => {
 
-    const onClickHandler = () => {
+    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(updateNewMessageAC(e.currentTarget.value));
+    }
 
+    const onClickHandler = () => {
+        props.dispatch(sendNewMessageAC());
+        props.dispatch(updateNewMessageAC(''));
     }
 
     return (
@@ -33,16 +40,20 @@ export const Messages = (props: PropsType) => {
                         <div className={s.messagesContent}>
                             {props.messages.messageContentData.map(item => {
                                 return (
-                                    <Message id={item.id} message={item.name}/>
+                                    <Message id={item.id} message={item.text}/>
                                 )
                             })}
 
                         </div>
                     </div>
                     <div className={s.textAreaMessageBox}>
-                        <textarea className={s.textAreaMessage}></textarea>
+                        <textarea
+                            className={s.textAreaMessage}
+                            value={props.state.messages.newMessageText}
+                            onChange={onChangeHandler}
+                        />
                         <Button onClick={onClickHandler} variant="contained">
-                            Add Post
+                            Add Message
                         </Button>
                     </div>
                 </div>
