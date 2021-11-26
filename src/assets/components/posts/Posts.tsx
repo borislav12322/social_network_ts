@@ -3,51 +3,18 @@ import s from './Posts.module.scss';
 import {Button} from "@mui/material";
 import {Post} from "../post/Post";
 import DahyunImg from '../../images/dahyun.jpeg';
-import {PostsType} from "../../../redux/state";
-import {addPostAC} from "../../../redux/profile-reducer";
+import {PostsType} from "../../../redux/profile-reducer";
+
 
 type PropsType = {
-    posts: Array<PostsType>;
-    message: string
-    dispatch: (action: any) => void
+    posts: Array<PostsType>
+    onClickHandler: () => void
+    onKeyPressHandler: (e: KeyboardEvent<HTMLTextAreaElement>) => void
+    onChangeHandler: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    newMessage: string
 }
 
-export const Posts = (props: PropsType) => {
-
-
-    const updatePostTextAC = (newMessageText: string) => {
-        return {
-            type: 'UPDATE-POST',
-            newMessageText,
-        } as const
-    }
-
-    const [newMessage, setNewMessage] = useState('');
-
-    const addNewPost = () => {
-        if (newMessage !== '') {
-
-            props.dispatch(updatePostTextAC(newMessage));
-            props.dispatch(addPostAC());
-
-
-            setNewMessage('');
-        }
-    }
-
-    const onClickHandler = () => {
-        addNewPost();
-    }
-
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter') {
-            addNewPost();
-        }
-    }
-
-    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setNewMessage(e.currentTarget.value);
-    }
+export const Posts = ({posts, onKeyPressHandler, onClickHandler, onChangeHandler ,newMessage, ...props}: PropsType) => {
 
     return (
         <div className={s.posts}>
@@ -70,7 +37,7 @@ export const Posts = (props: PropsType) => {
                 </Button>
             </div>
 
-            {props.posts.map((post, i) => {
+            {posts.map((post, i) => {
                 return (
                     <Post
                         key={i}

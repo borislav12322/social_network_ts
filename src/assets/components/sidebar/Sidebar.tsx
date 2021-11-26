@@ -7,12 +7,8 @@ import MusicImg from '../../images/music.png';
 import SettingsImg from '../../images/settings.png';
 import { NavLink } from "react-router-dom";
 import {FriendSidebarItem} from "../friendSidebarItem/FriendSidebarItem";
-import {SidebarSectionType} from "../../../redux/state";
 
-type PropsType = {
-    sidebar: SidebarSectionType
-}
-
+type PropsType = {}
 
 export const Sidebar = (props: PropsType) =>{
     return(
@@ -50,11 +46,11 @@ export const Sidebar = (props: PropsType) =>{
                         </a>
                     </li>
                     <li className={`${s.sidebarItem}  ${s.friendsSection}`}>
-                        <FriendSidebarItem friends={props.sidebar.friends}/>
+                        <FriendSidebarItem/>
                     </li>
 
                 </ul>
             </div>
         </aside>
     )
-}
+};

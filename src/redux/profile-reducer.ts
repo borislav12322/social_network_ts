@@ -12,7 +12,17 @@ export type ProfilesPageType = {
 
 export type ActionProfileType = UpdatePostACType | AddPostACType
 
-export const profileReducer = (state: ProfilesPageType, action: ActionProfileType): ProfilesPageType => {
+const initialState: ProfilesPageType = {
+    messageForNewPost: '',
+    posts: [
+        {id: 1, message: 'Hey!', likesCount: 2},
+        {id: 2, message: 'Twice is cool!', likesCount: 2},
+        {id: 3, message: 'Welcome here!', likesCount: 1},
+        {id: 4, message: 'Heyooo!', likesCount: 5},
+    ],
+}
+
+export const profileReducer = (state: ProfilesPageType = initialState, action: ActionProfileType): ProfilesPageType => {
     switch (action.type) {
         case 'UPDATE-POST':
             return {...state, messageForNewPost: action.newMessageText};

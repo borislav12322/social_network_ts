@@ -5,11 +5,10 @@ import {Sidebar} from "./assets/components/sidebar/Sidebar";
 import {Profile} from "./assets/components/profile/Profile";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {Messages} from "./assets/components/messages/Messages";
-import {stateType} from "./redux/state";
+import {Users} from "./assets/components/users/Users";
 
 type PropsType = {
-    state: stateType
-    dispatch: (action: any) => void
+
 }
 
 function App(props: PropsType) {
@@ -18,28 +17,25 @@ function App(props: PropsType) {
             <div className="App">
                 <Header/>
                 <div className='content'>
-                    <Sidebar sidebar={props.state.sidebar}/>
+                    <Sidebar/>
                     <div className="wrapper">
                         <Routes>
+
                             <Route
                                 path={'/profile'}
-                                element={
-                                    <Profile
-                                        profile={props.state.profile}
-
-                                        dispatch={props.dispatch}
-                                    />}
+                                element={<Profile/>}
                             />
 
                             <Route
                                 path={'/messages'}
-                                element={
-                                    <Messages
-                                        messages={props.state.messages}
-                                        dispatch={props.dispatch}
-                                        state={props.state}
-                                    />}
+                                element={<Messages/>}
                             />
+
+                            <Route
+                                path={'/users'}
+                                element={<Users/>}
+                            />
+
                         </Routes>
                     </div>
                 </div>
