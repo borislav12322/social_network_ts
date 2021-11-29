@@ -3,6 +3,7 @@ import s from './Users.module.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
 import {followAC, setUsersAC, unFollowAC, UsersType} from "../../../redux/users-reducer";
+import axios from "axios";
 
 type PropsType = {}
 
@@ -12,19 +13,24 @@ export const Users = (props: PropsType) => {
 
     const dispatch = useDispatch();
 
-    if (users.length === 0) {
-        dispatch(setUsersAC(users));
+    const getUsers = () => {
+        if (users.length === 0) {
+            axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
+                dispatch(setUsersAC(response.data.items));
+            });
+        }
     }
 
     return (
         <div className={s.users}>
+            <button onClick={getUsers}>getUsers</button>
             {users.map(item => {
                 return (
-                    <div className={s.userContent}>
+                    <div className={s.userContent} key={item.id}>
                         <div className={s.leftContent}>
-                            <img className={s.img} src="" alt=""/>
+                            <img className={s.img} src={item.photos.small ? item.photos.small : 'no photo'} alt=""/>
                             {/*<button onClick={}>{item.isFollowed ? 'Follow' : 'Unfollow'}</button>*/}
-                            {item.isFollowed ?
+                            {item.followed ?
                                 <button onClick={() => {
                                     dispatch(unFollowAC(false, item.id))
                                 }}>Follow</button>
@@ -37,14 +43,14 @@ export const Users = (props: PropsType) => {
                         <div className={s.content}>
                             <div className={s.row}>
                                 <h2 className={s.userName}>
-                                    {item.FirstName}
+                                    {item.name}
                                 </h2>
                                 <div className={s.location}>
                                     <span className={s.city}>
-                                        {item.location.city},
+                                        {'item.location.city'},
                                     </span>
                                     <span className={s.city}>
-                                        {item.location.country}
+                                        {'item.location.country'}
                                     </span>
                                 </div>
                             </div>
