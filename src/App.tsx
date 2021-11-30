@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./redux/store";
 import {UsersType} from "./redux/users-reducer";
 import UsersClass from "./assets/components/users/UsersClass";
+import {Dispatch} from "redux";
 
 type PropsType = {
 
@@ -17,9 +18,11 @@ type PropsType = {
 
 function App(props: PropsType) {
     const users = useSelector<AppRootStateType, Array<UsersType>>(state => state.usersReducer.users);
-    const dispatch = useDispatch();
+    const pageSize = useSelector<AppRootStateType, number>(state => state.usersReducer.pageSize);
+    const totalUsersCount = useSelector<AppRootStateType, number>(state => state.usersReducer.totalUsersCount);
+    const currentPage = useSelector<AppRootStateType, number>(state => state.usersReducer.currentPage);
 
-
+    const dispatch = useDispatch<Dispatch>();
 
     return (
         <BrowserRouter>
@@ -45,8 +48,16 @@ function App(props: PropsType) {
                                 element={<UsersClass
                                     users={users}
                                     dispatch={dispatch}
+                                    pageSize={pageSize}
+                                    totalUsersCount={totalUsersCount}
+                                    currentPage={currentPage}
                                 />}
                             />
+
+                            {/*<Route*/}
+                            {/*    path={'/users'}*/}
+                            {/*    element={<Users/>}*/}
+                            {/*/>*/}
 
                         </Routes>
                     </div>

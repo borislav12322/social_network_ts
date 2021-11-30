@@ -10,6 +10,7 @@ type PropsType = {}
 export const Users = (props: PropsType) => {
 
     const users = useSelector<AppRootStateType, Array<UsersType>>(state => state.usersReducer.users);
+    console.log(users)
 
     const dispatch = useDispatch();
 
@@ -21,9 +22,15 @@ export const Users = (props: PropsType) => {
         }
     }
 
+        if (users.length === 0) {
+            axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
+                dispatch(setUsersAC(response.data.items));
+            });
+        }
+
     return (
         <div className={s.users}>
-            <button onClick={getUsers}>getUsers</button>
+            {/*<button onClick={getUsers}>getUsers</button>*/}
             {users.map(item => {
                 return (
                     <div className={s.userContent} key={item.id}>

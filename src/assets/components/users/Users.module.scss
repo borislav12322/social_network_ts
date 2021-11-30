@@ -4,6 +4,7 @@
   flex-direction: column;
   padding-top: 30px;
   padding-left: 50px;
+
   .userContent {
     display: flex;
     align-items: flex-start;
@@ -16,18 +17,18 @@
       flex-direction: column;
     }
 
-    .content{
+    .content {
       display: flex;
       flex-direction: column;
       width: 100%;
       border: 1px black solid;
       border-radius: 10px;
 
-      .row{
+      .row {
         display: flex;
         justify-content: space-between;
 
-        .location{
+        .location {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
@@ -36,11 +37,23 @@
     }
   }
 
-  .moreBtn{
+  .moreBtn {
     min-height: 50px;
     max-width: 200px;
     width: 100%;
     padding: 0 20px;
+  }
+
+  .pagination__list {
+    display: flex;
+    column-gap: 10px;
+  }
+
+  .pagination__item {
+    cursor: pointer;
+  }
+  .selectedPage{
+    font-weight: 700;
   }
 }
 

@@ -1,3 +1,5 @@
+import {MouseEventHandler} from "react";
+
 type LocationType = {
     country: string,
     city: string
@@ -9,40 +11,24 @@ export type UsersType = {
     followed: boolean,
     status: string,
     location: LocationType
-    photos: {small: any, large: any}
+    photos: { small: any, large: any }
 }
 
 export type InitialStateType = {
     users: Array<UsersType>
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
 }
 
 let initialState = {
-    users: [
-        // {
-        //     id: 1,
-        //     FirstName: 'Rose',
-        //     isFollowed: true,
-        //     status: "BP!",
-        //     location: {country: 'Republic Korea', city: 'Seoul'}
-        // },
-        // {
-        //     id: 2,
-        //     FirstName: 'Jennie',
-        //     isFollowed: false,
-        //     status: "BP!",
-        //     location: {country: 'Republic Korea', city: 'Pusan'}
-        // },
-        // {
-        //     id: 3,
-        //     FirstName: 'Jisoo',
-        //     isFollowed: true,
-        //     status: "BP!",
-        //     location: {country: 'Republic Korea', city: 'Seoul'}
-        // },
-    ]
+    users: [],
+    pageSize: 20,
+    totalUsersCount: 0,
+    currentPage: 1,
 }
 
-export type ActionUsersType = FollowACType | UnFollowACType | SetUsersACType;
+export type ActionUsersType = FollowACType | UnFollowACType | SetUsersACType| ChangePageNumberACType | SetTotalUsersCountACType;
 
 export const usersReducer = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {
     switch (action.type) {
@@ -57,7 +43,11 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
                 users: [...state.users.map(t => t.id === action.userID ? {...t, followed: action.followed} : t)]
             };
         case 'SET-USERS':
-            return {...state, users: [...action.users, ...state.users]}
+            return {...state, users: [...action.users]}
+        case 'CHANGE-PAGE':
+            return {...state, currentPage: action.pageNumber}
+        case "SET-TOTAL-USERS-COUNT":
+            return {...state, totalUsersCount: action.totalCount}
 
         default:
             return state
@@ -91,4 +81,21 @@ export const setUsersAC = (users: Array<UsersType>) => {
         type: 'SET-USERS',
         users,
     } as const
+}
+
+type ChangePageNumberACType = ReturnType<typeof changePageNumberAC>
+
+export const changePageNumberAC = (pageNumber: number) => {
+  return{
+      type: 'CHANGE-PAGE',
+      pageNumber
+  } as const
+}
+type SetTotalUsersCountACType = ReturnType<typeof setTotalUsersCount>
+
+export const setTotalUsersCount = (totalCount: number) => {
+  return{
+      type: 'SET-TOTAL-USERS-COUNT',
+      totalCount
+  } as const
 }

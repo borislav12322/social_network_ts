@@ -1,36 +1,69 @@
-import React from "react";
+import React, {MouseEventHandler} from "react";
 import s from './Users.module.scss';
-import {ActionUsersType, followAC, setUsersAC, unFollowAC, UsersType} from "../../../redux/users-reducer";
+import {
+    ActionUsersType,
+    changePageNumberAC,
+    followAC, setTotalUsersCount,
+    setUsersAC,
+    unFollowAC,
+    UsersType
+} from "../../../redux/users-reducer";
 import axios from "axios";
 
 type UsersClassType = {
     users: Array<UsersType>
     dispatch: (ac: ActionUsersType) => ActionUsersType
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
 }
 
 class UsersClass extends React.Component<UsersClassType> {
 
-    constructor(props: UsersClassType) {
-        super(props);
+    componentDidMount() {
         if (this.props.users.length === 0) {
-            axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
+            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
                 this.props.dispatch(setUsersAC(response.data.items));
+                this.props.dispatch(setTotalUsersCount(response.data.totalCount));
+                console.log(response.data.items)
             });
         }
+    };
 
-    }
-
-    // getUsers = () => {
-    //     if (this.props.users.length === 0) {
-    //         axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
-    //             this.props.dispatch(setUsersAC(response.data.items));
-    //         });
-    //     }
-    // }
+    changePage(pageNumber: number){
+        this.props.dispatch(changePageNumberAC(pageNumber));
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
+            this.props.dispatch(setUsersAC(response.data.items));
+        });
+    };
 
     render() {
+        const pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+
+        const pages: Array<number> = [];
+
+        for (let i = 1; i <= pagesCount; i++) {
+            pages.push(i)
+        }
+
+
         return (
             <div className={s.users}>
+
+                <div className={s.pagination}>
+                    <ul className={s.pagination__list}>
+                        {
+                            pages.map(pageNumber => {
+                                return (
+                                    <li onClick={() => this.changePage(pageNumber)} className={`${s.pagination__item} 
+                                    ${this.props.currentPage === pageNumber && s.selectedPage}`}>
+                                        {pageNumber}
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
                 {this.props.users.map(item => {
                     return (
                         <div className={s.userContent} key={item.id}>
