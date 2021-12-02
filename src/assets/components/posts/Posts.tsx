@@ -12,6 +12,7 @@ type PropsType = {
     onKeyPressHandler: (e: KeyboardEvent<HTMLTextAreaElement>) => void
     onChangeHandler: (e: ChangeEvent<HTMLTextAreaElement>) => void
     newMessage: string
+
 }
 
 export const Posts = ({posts, onKeyPressHandler, onClickHandler, onChangeHandler ,newMessage, ...props}: PropsType) => {

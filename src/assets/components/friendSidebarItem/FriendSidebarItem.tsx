@@ -1,6 +1,6 @@
 import React from "react";
 import s from './FriendSidebarItem.module.scss';
-import {FriendsSectionType} from "../../../redux/state";
+import {FriendsSectionType} from "../../../redux/sidebar-reducer";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
 

@@ -1,5 +1,3 @@
-import {MouseEventHandler} from "react";
-
 type LocationType = {
     country: string,
     city: string
@@ -11,7 +9,7 @@ export type UsersType = {
     followed: boolean,
     status: string,
     location: LocationType
-    photos: { small: any, large: any }
+    photos: { small: string, large: string }
 }
 
 export type InitialStateType = {
@@ -19,6 +17,7 @@ export type InitialStateType = {
     pageSize: number
     totalUsersCount: number
     currentPage: number
+    isFetching: boolean
 }
 
 let initialState = {
@@ -26,9 +25,16 @@ let initialState = {
     pageSize: 20,
     totalUsersCount: 0,
     currentPage: 1,
+    isFetching: false
 }
 
-export type ActionUsersType = FollowACType | UnFollowACType | SetUsersACType| ChangePageNumberACType | SetTotalUsersCountACType;
+export type ActionUsersType =
+    FollowACType |
+    UnFollowACType |
+    SetUsersACType |
+    ChangePageNumberACType |
+    SetTotalUsersCountACType |
+    ToggleIsFetchingACType;
 
 export const usersReducer = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {
     switch (action.type) {
@@ -46,8 +52,10 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
             return {...state, users: [...action.users]}
         case 'CHANGE-PAGE':
             return {...state, currentPage: action.pageNumber}
-        case "SET-TOTAL-USERS-COUNT":
+        case 'SET-TOTAL-USERS-COUNT':
             return {...state, totalUsersCount: action.totalCount}
+        case 'TOGGLE-IS-FETCHING':
+            return {...state, isFetching: action.value}
 
         default:
             return state
@@ -86,16 +94,26 @@ export const setUsersAC = (users: Array<UsersType>) => {
 type ChangePageNumberACType = ReturnType<typeof changePageNumberAC>
 
 export const changePageNumberAC = (pageNumber: number) => {
-  return{
-      type: 'CHANGE-PAGE',
-      pageNumber
-  } as const
+    return {
+        type: 'CHANGE-PAGE',
+        pageNumber,
+    } as const
 }
-type SetTotalUsersCountACType = ReturnType<typeof setTotalUsersCount>
 
-export const setTotalUsersCount = (totalCount: number) => {
-  return{
-      type: 'SET-TOTAL-USERS-COUNT',
-      totalCount
-  } as const
+type SetTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
+
+export const setTotalUsersCountAC = (totalCount: number) => {
+    return {
+        type: 'SET-TOTAL-USERS-COUNT',
+        totalCount,
+    } as const
+}
+
+type ToggleIsFetchingACType = ReturnType<typeof toggleIsFetchingAC>
+
+export const toggleIsFetchingAC = (value: boolean) => {
+    return {
+        type: 'TOGGLE-IS-FETCHING',
+        value,
+    } as const
 }

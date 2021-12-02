@@ -2,16 +2,26 @@ import React from "react";
 import s from './Profile.module.scss';
 import Background from '../../images/monterey_bg.jpeg';
 import {ProfileInfo} from "../profileInfo/ProfileInfo";
-import Photo from '../../images/profile_photo.png'
-import {Posts} from "../posts/Posts";
 import {PostsContainer} from "./PostsContainer";
-import {useDispatch, useSelector} from "react-redux";
+import {PhotosType, ProfileDataType, ProfilesPageType} from "../../../redux/profile-reducer";
+import {Preloader} from "../preloader/Preloader";
+import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
-import {PostsType} from "../../../redux/profile-reducer";
 
-type PropsType = {};
+type PropsType = {
+    profileData: ProfileDataType
+};
 
 export const Profile = (props: PropsType) => {
+
+
+
+    const photos = useSelector<AppRootStateType, string>
+    (state => state.profileReducer.profileData.photos.large)
+
+    if(!photos){
+        return <Preloader/>
+    }
 
 
     return (
@@ -21,8 +31,8 @@ export const Profile = (props: PropsType) => {
                     <img className={s.img} src={Background} alt=""/>
 
                     <ProfileInfo
-                        photo={Photo}
-                        name={'Son Chaeyoung'}
+                        photo={photos}
+                        name={'Lorem Ipsum'}
                         birthday={'11.12.1998'}
                         city={'Moscow'}
                         education={'MIREA'}

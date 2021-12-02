@@ -41,8 +41,6 @@ export const ProfileInfo = ({photo, name, birthday, city, education, website, ..
                         <a className={s.propsData} href={website} target={'_blank'}>borislav-web.ru</a>
                     </li>
                 </ul>
-
-
             </div>
         </div>
     )
