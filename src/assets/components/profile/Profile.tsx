@@ -3,35 +3,29 @@ import s from './Profile.module.scss';
 import Background from '../../images/monterey_bg.jpeg';
 import {ProfileInfo} from "../profileInfo/ProfileInfo";
 import {PostsContainer} from "./PostsContainer";
-import {PhotosType, ProfileDataType, ProfilesPageType} from "../../../redux/profile-reducer";
 import {Preloader} from "../preloader/Preloader";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../../redux/store";
+
 
 type PropsType = {
-    profileData: ProfileDataType
+    photoLarge: string | null
+    goBack: () => void
 };
 
 export const Profile = (props: PropsType) => {
 
-
-
-    const photos = useSelector<AppRootStateType, string>
-    (state => state.profileReducer.profileData.photos.large)
-
-    if(!photos){
-        return <Preloader/>
-    }
-
+    // if(!props.photoLarge || null){
+    //     return <Preloader/>
+    // }
 
     return (
         <div className={s.contentBox}>
+            <button onClick={props.goBack}>Go back</button>
             <div className={s.container}>
                 <div className={s.wrapper}>
                     <img className={s.img} src={Background} alt=""/>
 
                     <ProfileInfo
-                        photo={photos}
+                        photo={props.photoLarge}
                         name={'Lorem Ipsum'}
                         birthday={'11.12.1998'}
                         city={'Moscow'}

@@ -1,33 +1,43 @@
-import React from "react";
-import axios from "axios";
-import {connect} from "react-redux";
-import {ProfilesPageType, setUserProfileAC} from "../../../redux/profile-reducer";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getProfileData} from "../../../redux/profile-reducer";
 import {Profile} from "./Profile";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
+import {AppRootStateType} from "../../../redux/store";
 
 type PropsType = {}
 
-class ProfileContainerClass extends React.Component<any, any> {
 
-    componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/2`).then(response => {
-            this.props.setUserProfileAC(response.data);
-        });
+export const ProfileContainer = (props: PropsType) => {
+
+    let {id} = useParams();
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth);
+
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1)
+    };
+
+    useEffect(() => {
+        dispatch(getProfileData(id))
+    }, [id]);
+
+    const photoLarge = useSelector<AppRootStateType, string | null>
+    (state => state.profileReducer.profileData.photos.large)
+
+    if (!isAuth) {
+        return <Navigate to='/login'/>
     }
 
-    render() {
-        return (
-            <Profile profileData={this.props.profileData}/>
-        )
-    }
+    return (
+        <div>
+            <Profile
+                goBack={goBack}
+                photoLarge={photoLarge}
+            />
+        </div>
+    )
 }
-
-const mapStateToProps = (state: ProfilesPageType) => {
-    return {
-        profileData: state.profileData
-    }
-}
-
-export default connect(mapStateToProps, {
-    setUserProfileAC,
-
-})(ProfileContainerClass)

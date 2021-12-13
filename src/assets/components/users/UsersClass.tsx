@@ -9,6 +9,7 @@ type PropsType = {
     totalUsersCount: number
     pageSize: number
     currentPage: number
+    followingInProgress: Array<number>
     changePage: (pageNumber: number) => void
     unFollow: (followed: boolean, userID: number) => void
     follow: (followed: boolean, userID: number) => void
@@ -50,16 +51,18 @@ export const UsersClass = (props: PropsType) => {
 
                         <div className={s.leftContent}>
                             <NavLink to={`/profile/${item.id}`} className={s.navLink}>
-                                <img className={s.img} src={item.photos.small ? item.photos.small : UserDefaultIcon} alt=""/>
+                                <img className={s.img} src={item.photos.small ? item.photos.small : UserDefaultIcon}
+                                     alt=""/>
                             </NavLink>
                             {item.followed ?
-                                <button onClick={() => {
+                                <button disabled={props.followingInProgress.some(id => id === item.id)} onClick={() => {
                                     props.unFollow(false, item.id)
-                                }}>Follow</button>
+                                }}>Unfollow</button>
                                 :
-                                <button onClick={() => {
+                                <button disabled={props.followingInProgress.some(id => id === item.id)} onClick={() => {
                                     props.follow(true, item.id)
-                                }}>Unfollow</button>}
+                                }}>Follow</button>
+                            }
                         </div>
 
                         <div className={s.content}>

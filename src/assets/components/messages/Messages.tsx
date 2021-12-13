@@ -11,6 +11,7 @@ import {
 } from "../../../redux/messages-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
+import {Navigate} from "react-router-dom";
 
 type PropsType = {}
 
@@ -20,6 +21,7 @@ export const Messages = (props: PropsType) => {
     const messagesContentData = useSelector<AppRootStateType, Array<MessageContentDataType>>(state => state.messagesReducer.messageContentData)
     const messagesData = useSelector<AppRootStateType, Array<DialogItemType>>(state => state.messagesReducer.messagesData)
     const dispatch = useDispatch();
+    const isAuth = useSelector<AppRootStateType,boolean>(state => state.authReducer.isAuth);
 
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         dispatch(updateNewMessageAC(e.currentTarget.value));
@@ -28,6 +30,10 @@ export const Messages = (props: PropsType) => {
     const onClickHandler = () => {
         dispatch(sendNewMessageAC());
         dispatch(updateNewMessageAC(''));
+    }
+
+    if(!isAuth){
+        return <Navigate to='/login'/>
     }
 
     return (

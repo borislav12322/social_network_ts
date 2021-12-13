@@ -1,3 +1,8 @@
+import {usersAPI} from "../API/API";
+import {Dispatch} from "redux";
+import {AppRootStateType} from "./store";
+import {ThunkAction} from "redux-thunk";
+
 type LocationType = {
     country: string,
     city: string
@@ -12,12 +17,17 @@ export type UsersType = {
     photos: { small: string, large: string }
 }
 
+export type followingInProgressType = {
+    id: number
+}
+
 export type InitialStateType = {
     users: Array<UsersType>
     pageSize: number
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: Array<number>
 }
 
 let initialState = {
@@ -25,7 +35,8 @@ let initialState = {
     pageSize: 20,
     totalUsersCount: 0,
     currentPage: 1,
-    isFetching: false
+    isFetching: false,
+    followingInProgress: [],
 }
 
 export type ActionUsersType =
@@ -34,7 +45,8 @@ export type ActionUsersType =
     SetUsersACType |
     ChangePageNumberACType |
     SetTotalUsersCountACType |
-    ToggleIsFetchingACType;
+    ToggleIsFetchingACType |
+    IsFollowingLoadingACType;
 
 export const usersReducer = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {
     switch (action.type) {
@@ -56,6 +68,13 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
             return {...state, totalUsersCount: action.totalCount}
         case 'TOGGLE-IS-FETCHING':
             return {...state, isFetching: action.value}
+        case 'IS-FOLLOWING':
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userID]
+                    : state.followingInProgress.filter(id => id !== action.userID)
+            }
 
         default:
             return state
@@ -116,4 +135,67 @@ export const toggleIsFetchingAC = (value: boolean) => {
         type: 'TOGGLE-IS-FETCHING',
         value,
     } as const
+}
+
+type IsFollowingLoadingACType = ReturnType<typeof isFollowingLoadingAC>
+
+export const isFollowingLoadingAC = (isFetching: boolean, userID: number) => {
+    return {
+        type: 'IS-FOLLOWING',
+        isFetching,
+        userID,
+    } as const
+}
+
+
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number): any => {
+    return (dispatch: Dispatch<ActionUsersType>) => {
+
+
+        dispatch(toggleIsFetchingAC(true));
+
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(toggleIsFetchingAC(false));
+            dispatch(setUsersAC(data.items));
+            dispatch(setTotalUsersCountAC(data.totalCount));
+        });
+    }
+};
+
+export const changePageThunkCreator = (pageNumber: number, pageSize: number): any => {
+    return (dispatch: Dispatch<ActionUsersType>) => {
+        dispatch(changePageNumberAC(pageNumber))
+        dispatch(toggleIsFetchingAC(true))
+        usersAPI.getUsers(pageNumber, pageSize).then(data => {
+            dispatch(toggleIsFetchingAC(false))
+            dispatch(setUsersAC(data.items));
+        });
+    }
+}
+
+export const followThunkCreator = (followed: boolean, userID: number): any => {
+    return (dispatch: Dispatch<ActionUsersType>) => {
+        dispatch(isFollowingLoadingAC(true, userID))
+        usersAPI.follow(userID).then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(followAC(followed, userID));
+            }
+            dispatch(isFollowingLoadingAC(false, userID))
+            console.log(response.data);
+        });
+    }
+}
+
+export const unfollowThunkCreator = (followed: boolean, userID: number): any => {
+    return (dispatch: Dispatch<ActionUsersType>) => {
+        dispatch(isFollowingLoadingAC(true, userID))
+        usersAPI.unfollow(userID).then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(unFollowAC(followed, userID))
+            }
+            dispatch(isFollowingLoadingAC(false, userID));
+            console.log(response.data);
+        });
+    }
 }

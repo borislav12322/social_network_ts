@@ -1,8 +1,10 @@
 import React from "react";
 import s from './ProfileInfo.module.scss';
+import defaultUserIcon from '../../images/userDefault.png'
+import {Preloader} from "../preloader/Preloader";
 
 type PropsType = {
-    photo: string
+    photo: string | null
     name: string
     birthday: string
     city: string
@@ -11,9 +13,11 @@ type PropsType = {
 }
 
 export const ProfileInfo = ({photo, name, birthday, city, education, website, ...props}: PropsType) => {
+
+
     return (
         <div className={s.profileInfo}>
-            <img className={s.profileImg} src={photo} alt="photo"/>
+            <img className={s.profileImg} src={photo ? photo : defaultUserIcon} alt="photo"/>
             <div className={s.contentBox}>
                 <h2 className={s.name}>
                     {name}

@@ -1,36 +1,32 @@
 import React from 'react';
 import './App.scss';
-import {Header} from "./header/Header";
 import {Sidebar} from "./assets/components/sidebar/Sidebar";
-import {Profile} from "./assets/components/profile/Profile";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {Messages} from "./assets/components/messages/Messages";
 import {UsersClassContainer} from "./assets/components/users/UsersClassContainer";
-import ProfileContainerClass from "./assets/components/profile/ProfileContainerClass";
+import {ProfileContainer} from "./assets/components/profile/ProfileContainerClass";
+import {HeaderContainer} from "./header/HeaderContainer";
+import {Login} from "./assets/components/login/Login";
 
-type PropsType = {
-
-}
-
-function App(props: PropsType) {
+function App() {
 
     return (
         <BrowserRouter>
             <div className="App">
-                <Header/>
+                <HeaderContainer/>
                 <div className='content'>
                     <Sidebar/>
                     <div className="wrapper">
                         <Routes>
 
                             <Route
-                                path={'/profile'}
-                                element={<ProfileContainerClass/>}
+                                path={'/profile/:id'}
+                                element={<ProfileContainer/>}
                             />
 
                             <Route
                                 path={'/messages'}
-                                element={<Messages />}
+                                element={<Messages/>}
                             />
 
                             <Route
@@ -38,10 +34,10 @@ function App(props: PropsType) {
                                 element={<UsersClassContainer/>}
                             />
 
-                            {/*<Route*/}
-                            {/*    path={'/users'}*/}
-                            {/*    element={<Users/>}*/}
-                            {/*/>*/}
+                            <Route
+                                path={'/login'}
+                                element={<Login/>}
+                            />
 
                         </Routes>
                     </div>
@@ -49,6 +45,6 @@ function App(props: PropsType) {
             </div>
         </BrowserRouter>
     );
-};
+}
 
 export default App;

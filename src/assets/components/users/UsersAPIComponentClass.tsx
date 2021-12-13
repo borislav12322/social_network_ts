@@ -1,8 +1,8 @@
 import React from "react";
-import axios from "axios";
-import {UsersType} from "../../../redux/users-reducer";
+import {changePageThunkCreator, UsersType} from "../../../redux/users-reducer";
 import {UsersClass} from "./UsersClass";
 import {Preloader} from "../preloader/Preloader";
+import {usersAPI} from "../../../API/API";
 
 type PropsType = {
     users: Array<UsersType>
@@ -10,34 +10,27 @@ type PropsType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: Array<number>
     follow: (followed: boolean, userID: number) => void
     unFollow: (followed: boolean, userID: number) => void
     setUsers: (users: Array<UsersType>) => void
     changePageNumber: (pageNumber: number) => void
     setTotalUsersCount: (totalCount: number) => void
     toggleIsFetching: (value: boolean) => void
+    getUsers: (currentPage: number, pageSize: number) => void
+    changePage: (currentPage: number, pageSize: number) => void
 }
 
 class UsersAPIComponentClass extends React.Component<PropsType> {
 
     componentDidMount() {
-        this.props.toggleIsFetching(true);
-            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).
-            then(response => {
-                this.props.toggleIsFetching(false);
-                this.props.setUsers(response.data.items)
-                this.props.setTotalUsersCount(response.data.totalCount);
-            });
+        this.props.getUsers(this.props.currentPage, this.props.pageSize);
     };
 
+
+
     changePage(pageNumber: number) {
-        this.props.toggleIsFetching(true);
-        this.props.changePageNumber(pageNumber);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).
-        then(response => {
-            this.props.toggleIsFetching(false);
-            this.props.setUsers(response.data.items);
-        });
+        this.props.changePage(pageNumber, this.props.pageSize)
     };
 
     render() {
@@ -53,6 +46,7 @@ class UsersAPIComponentClass extends React.Component<PropsType> {
                 <UsersClass users={this.props.users}
                             totalUsersCount={this.props.totalUsersCount}
                             pageSize={this.props.pageSize}
+                            followingInProgress={this.props.followingInProgress}
                             currentPage={this.props.currentPage}
                             changePage={onClickHandler}
                             unFollow={this.props.unFollow}

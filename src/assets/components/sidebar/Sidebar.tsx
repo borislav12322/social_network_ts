@@ -11,40 +11,31 @@ import {FriendSidebarItem} from "../friendSidebarItem/FriendSidebarItem";
 type PropsType = {}
 
 export const Sidebar = (props: PropsType) =>{
+
+    const sideBarData = [
+        {icon: ProfileImg, title: 'Profile', navTitle: '/profile'},
+        {icon: MessagesImg, title: 'Messages', navTitle: '/messages'},
+        {icon: '', title: 'Users', navTitle: '/users'},
+        {icon: NewsImg, title: 'News', navTitle: ''},
+        {icon: MusicImg, title: 'Music', navTitle: ''},
+        {icon: SettingsImg, title: 'Settings', navTitle: ''},
+    ]
+
     return(
         <aside className={s.sidebar}>
             <div className={s.container}>
                 <ul className={s.sidebarList}>
-                    <li className={s.sidebarItem}>
-                        <NavLink to="/profile" className={s.sidebarLink}>
-                            <img className={s.menuImg} src={ProfileImg} alt=""/>
-                            <span className={s.menuText}>Profile</span>
-                        </NavLink>
-                    </li>
-                    <li className={s.sidebarItem}>
-                        <NavLink to="/messages" className={s.sidebarLink}>
-                            <img className={s.menuImg} src={MessagesImg} alt=""/>
-                            <span className={s.menuText}>Messages</span>
-                        </NavLink>
-                    </li>
-                    <li className={s.sidebarItem}>
-                        <a href="" className={s.sidebarLink}>
-                            <img className={s.menuImg} src={NewsImg} alt=""/>
-                            <span className={s.menuText}>News</span>
-                        </a>
-                    </li>
-                    <li className={s.sidebarItem}>
-                        <a href="" className={s.sidebarLink}>
-                            <img className={s.menuImg} src={MusicImg} alt=""/>
-                            <span className={s.menuText}>Music</span>
-                        </a>
-                    </li>
-                    <li className={s.sidebarItem}>
-                        <a href="" className={s.sidebarLink}>
-                            <img className={s.menuImg} src={SettingsImg} alt=""/>
-                            <span className={s.menuText}>Settings</span>
-                        </a>
-                    </li>
+                    {sideBarData.map((item, i) =>{
+                        return(
+                            <li key={i} className={s.sidebarItem}>
+                                <NavLink to={item.navTitle} className={s.sidebarLink}>
+                                    <img className={s.menuImg} src={item.icon} alt=""/>
+                                    <span className={s.menuText}>{item.title}</span>
+                                </NavLink>
+                            </li>
+                        )
+                    })}
+
                     <li className={`${s.sidebarItem}  ${s.friendsSection}`}>
                         <FriendSidebarItem/>
                     </li>
