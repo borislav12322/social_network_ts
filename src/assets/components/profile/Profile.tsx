@@ -9,6 +9,7 @@ import {Preloader} from "../preloader/Preloader";
 type PropsType = {
     photoLarge: string | null
     goBack: () => void
+    fullName: string
 };
 
 export const Profile = (props: PropsType) => {
@@ -26,11 +27,11 @@ export const Profile = (props: PropsType) => {
 
                     <ProfileInfo
                         photo={props.photoLarge}
-                        name={'Lorem Ipsum'}
-                        birthday={'11.12.1998'}
-                        city={'Moscow'}
-                        education={'MIREA'}
-                        website={'https://www.borislav-web.ru/'}
+                        name={props.fullName}
+                        birthday={'11.12.1900'}
+                        city={'Lorem'}
+                        education={'Lorem'}
+                        website={'Lorem'}
                     />
 
                     {/*<Posts/>*/}

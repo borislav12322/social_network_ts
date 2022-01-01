@@ -14,6 +14,8 @@ export type PhotosType = {
 
 export type ProfileDataType = {
     photos: PhotosType
+    fullName: string
+
 }
 
 export type ProfilesPageType = {
@@ -32,7 +34,10 @@ const initialState: ProfilesPageType = {
         {id: 3, message: 'Welcome here!', likesCount: 1},
         {id: 4, message: 'Lorem!', likesCount: 5},
     ],
-    profileData: {photos: {small: '', large: ''}},
+    profileData: {
+        photos: {small: '', large: ''},
+        fullName: '',
+    },
 }
 
 export const profileReducer = (state: ProfilesPageType = initialState, action: ActionProfileType): ProfilesPageType => {
@@ -75,7 +80,7 @@ export const setUserProfileAC = (profileData: ProfileDataType) => {
     } as const
 };
 
-export const getProfileData = (id: string | undefined): any => {
+export const getProfileData = (id: string): any => {
     return (dispatch: Dispatch<ActionProfileType>) => {
         usersAPI.getProfileData(id).then(response => {
             dispatch(setUserProfileAC(response.data))

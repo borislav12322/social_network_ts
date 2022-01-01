@@ -1,19 +1,22 @@
 import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {getProfileData} from "../../../redux/profile-reducer";
 import {Profile} from "./Profile";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {AppRootStateType} from "../../../redux/store";
+import {AuthRedirect} from "../../../HOC/AuthRedirect";
+import {compose} from "redux";
 
 type PropsType = {}
 
 
-export const ProfileContainer = (props: PropsType) => {
+export const ProfileContainer = AuthRedirect((props: PropsType) => {
+    const dispatch = useDispatch();
 
-    let {id} = useParams();
+    const myId = useSelector<AppRootStateType, number | null>(state => state.authReducer.id);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth);
 
-    const dispatch = useDispatch();
+    let {id} = useParams();
 
     const navigate = useNavigate();
 
@@ -22,22 +25,33 @@ export const ProfileContainer = (props: PropsType) => {
     };
 
     useEffect(() => {
-        dispatch(getProfileData(id))
-    }, [id]);
+        if (id) {
+            dispatch(getProfileData(id))
+        } else {
+            if (myId) {
+                dispatch(getProfileData(myId.toString()))
+            }
+            dispatch(getProfileData('2'))
+        }
 
-    const photoLarge = useSelector<AppRootStateType, string | null>
-    (state => state.profileReducer.profileData.photos.large)
+    }, [id, myId]);
 
-    if (!isAuth) {
-        return <Navigate to='/login'/>
-    }
+    const photoLarge = useSelector<AppRootStateType, string | null>(
+        state => state.profileReducer.profileData.photos.large);
+
+    const fullName = useSelector<AppRootStateType, string>(
+        state => state.profileReducer.profileData.fullName);
+
 
     return (
         <div>
             <Profile
                 goBack={goBack}
                 photoLarge={photoLarge}
+                fullName={fullName}
             />
         </div>
     )
-}
+
+
+});

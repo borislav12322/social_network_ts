@@ -25,11 +25,12 @@ export const usersAPI = {
         return instanceAxios.delete(`follow/${userID}`)
     },
 
-    authMe(){
+    authMe() {
         return instanceAxios.get(`auth/me`)
     },
 
-    getProfileData(id: string | undefined){
+    getProfileData(id: string | undefined) {
         return instanceAxios.get(`profile/${id}`)
     },
+
 }

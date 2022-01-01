@@ -42,7 +42,7 @@ export const ProfileInfo = ({photo, name, birthday, city, education, website, ..
                         <span className={s.templateText}>
                             Web Site:
                         </span>
-                        <a className={s.propsData} href={website} target={'_blank'}>borislav-web.ru</a>
+                        <a className={s.propsData} href={website} target={'_blank'}>{website}</a>
                     </li>
                 </ul>
             </div>

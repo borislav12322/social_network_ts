@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 type PropsType = {
     login: string | null
     isAuth: boolean
+    id: number|null
 }
 
 export const Header = (props: PropsType) => {
@@ -19,7 +20,8 @@ export const Header = (props: PropsType) => {
                     <a className={s.logoLink} href="/">
                         <img className={s.logo} src={Logo} alt="logo"/>
                     </a>
-                    {isAuth}
+                    <span>{isAuth}</span>
+                    <span>{'id: =====>'} {props.id}</span>
                 </div>
             </div>
         </header>

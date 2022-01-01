@@ -7,13 +7,15 @@ import MusicImg from '../../images/music.png';
 import SettingsImg from '../../images/settings.png';
 import { NavLink } from "react-router-dom";
 import {FriendSidebarItem} from "../friendSidebarItem/FriendSidebarItem";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../redux/store";
 
 type PropsType = {}
 
 export const Sidebar = (props: PropsType) =>{
-
+    const id = useSelector<AppRootStateType, number|null>(state => state.authReducer.id);
     const sideBarData = [
-        {icon: ProfileImg, title: 'Profile', navTitle: '/profile'},
+        {icon: ProfileImg, title: 'Profile', navTitle: '/profile/' + id || ''},
         {icon: MessagesImg, title: 'Messages', navTitle: '/messages'},
         {icon: '', title: 'Users', navTitle: '/users'},
         {icon: NewsImg, title: 'News', navTitle: ''},

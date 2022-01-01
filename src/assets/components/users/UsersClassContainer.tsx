@@ -7,16 +7,16 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import UsersAPIComponentClass from "./UsersAPIComponentClass";
 import {AppRootStateType} from "../../../redux/store";
-import {Dispatch} from "redux";
+import {compose, Dispatch} from "redux";
+import {AuthRedirect} from "../../../HOC/AuthRedirect";
 
-export const UsersClassContainer = () => {
+export const UsersClassContainer = AuthRedirect(() => {
     const users = useSelector<AppRootStateType, Array<UsersType>>(state => state.usersReducer.users);
     const pageSize = useSelector<AppRootStateType, number>(state => state.usersReducer.pageSize);
     const totalUsersCount = useSelector<AppRootStateType, number>(state => state.usersReducer.totalUsersCount);
     const currentPage = useSelector<AppRootStateType, number>(state => state.usersReducer.currentPage);
     const isFetching = useSelector<AppRootStateType, boolean>(state => state.usersReducer.isFetching);
     const followingInProgress = useSelector<AppRootStateType, Array<number>>(state => state.usersReducer.followingInProgress);
-
 
     const dispatch = useDispatch<Dispatch<ActionUsersType>>();
 
@@ -47,9 +47,9 @@ export const UsersClassContainer = () => {
     const getUsers = (currentPage: number, pageSize: number) => {
         dispatch(getUsersThunkCreator(currentPage, pageSize))
     }
-    
+
     const changePage = (pageNumber: number, pageSize: number) => {
-      dispatch(changePageThunkCreator(pageNumber, pageSize))
+        dispatch(changePageThunkCreator(pageNumber, pageSize))
     }
 
     return (
@@ -72,5 +72,4 @@ export const UsersClassContainer = () => {
             />
         </>
     )
-}
-
+});

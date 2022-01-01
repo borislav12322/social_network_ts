@@ -12,16 +12,18 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
 import {Navigate} from "react-router-dom";
+import {AuthRedirect} from "../../../HOC/AuthRedirect";
+import {compose} from "redux";
 
 type PropsType = {}
 
-export const Messages = (props: PropsType) => {
+export const Messages = AuthRedirect((props: PropsType) => {
 
     const newText = useSelector<AppRootStateType, string>(state => state.messagesReducer.newMessageText);
     const messagesContentData = useSelector<AppRootStateType, Array<MessageContentDataType>>(state => state.messagesReducer.messageContentData)
     const messagesData = useSelector<AppRootStateType, Array<DialogItemType>>(state => state.messagesReducer.messagesData)
     const dispatch = useDispatch();
-    const isAuth = useSelector<AppRootStateType,boolean>(state => state.authReducer.isAuth);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth);
 
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         dispatch(updateNewMessageAC(e.currentTarget.value));
@@ -32,7 +34,7 @@ export const Messages = (props: PropsType) => {
         dispatch(updateNewMessageAC(''));
     }
 
-    if(!isAuth){
+    if (!isAuth) {
         return <Navigate to='/login'/>
     }
 
@@ -74,4 +76,4 @@ export const Messages = (props: PropsType) => {
 
         </div>
     )
-};
+});

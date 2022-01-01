@@ -12,6 +12,8 @@ export const HeaderContainer = () => {
 
     const login = useSelector<AppRootStateType, string | null>(state => state.authReducer.login);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth);
+    const id = useSelector<AppRootStateType, number|null>(state => state.authReducer.id);
+
 
 
     useEffect(() => {
@@ -21,6 +23,7 @@ export const HeaderContainer = () => {
         <Header
             login={login}
             isAuth={isAuth}
+            id={id}
         />
     )
 }
