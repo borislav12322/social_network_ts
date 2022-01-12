@@ -2,6 +2,9 @@ import React from "react";
 import s from './ProfileInfo.module.scss';
 import defaultUserIcon from '../../images/userDefault.png'
 import {Preloader} from "../preloader/Preloader";
+import {ProfileStatus} from "../profileStatus/ProfileStatus";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../redux/store";
 
 type PropsType = {
     photo: string | null
@@ -14,14 +17,17 @@ type PropsType = {
 
 export const ProfileInfo = ({photo, name, birthday, city, education, website, ...props}: PropsType) => {
 
-
     return (
         <div className={s.profileInfo}>
             <img className={s.profileImg} src={photo ? photo : defaultUserIcon} alt="photo"/>
             <div className={s.contentBox}>
-                <h2 className={s.name}>
-                    {name}
-                </h2>
+                <div className={s.mainInfo}>
+                    <h2 className={s.name}>
+                        {name}
+                    </h2>
+                    <ProfileStatus/>
+                </div>
+
                 <ul className={s.dataList}>
                     <li className={s.dataItem}>
                         <span className={s.templateText}>Date of Birth: </span>
@@ -32,6 +38,7 @@ export const ProfileInfo = ({photo, name, birthday, city, education, website, ..
                         <span className={s.templateText}>City: </span>
                         <span className={s.propsData}>{city}</span>
                     </li>
+
 
                     <li className={s.dataItem}>
                         <span className={s.templateText}>Education: </span>

@@ -29,5 +29,9 @@
   .templateText{
     font-weight: 700;
   }
+  .mainInfo{
+    display: flex;
+    flex-direction: column;
+  }
 
 }

@@ -22,9 +22,16 @@ export type ProfilesPageType = {
     messageForNewPost: string
     posts: Array<PostsType>
     profileData: ProfileDataType
+    status: string | null
+    requestStatus: boolean,
 };
 
-export type ActionProfileType = UpdatePostACType | AddPostACType | SetUserProfileAC
+export type ActionProfileType =
+    UpdatePostACType
+    | AddPostACType
+    | SetUserProfileAC
+    | GetProfileStatusACType
+    | ChangeRequestStatusACType
 
 const initialState: ProfilesPageType = {
     messageForNewPost: '',
@@ -38,17 +45,23 @@ const initialState: ProfilesPageType = {
         photos: {small: '', large: ''},
         fullName: '',
     },
+    status: '',
+    requestStatus: false,
 }
 
 export const profileReducer = (state: ProfilesPageType = initialState, action: ActionProfileType): ProfilesPageType => {
     switch (action.type) {
         case 'UPDATE-POST':
             return {...state, messageForNewPost: action.newMessageText};
-
         case 'ADD-POST':
             return {...state, posts: [{id: 1, message: state.messageForNewPost, likesCount: 0}, ...state.posts]};
         case "SET-USER-PROFILE":
             return {...state, profileData: action.profileData}
+        case 'GET-PROFILE-STATUS':
+            return {...state, status: action.statusText}
+        case 'CHANGE-REQUEST-STATUS':
+            return {...state, requestStatus: action.status}
+
         default:
             return state
     }
@@ -80,10 +93,60 @@ export const setUserProfileAC = (profileData: ProfileDataType) => {
     } as const
 };
 
-export const getProfileData = (id: string): any => {
+type GetProfileStatusACType = ReturnType<typeof getProfileStatusAC>;
+
+export const getProfileStatusAC = (statusText: string | null) => {
+    return {
+        type: 'GET-PROFILE-STATUS',
+        statusText,
+    } as const
+};
+
+
+export type ChangeRequestStatusACType = ReturnType<typeof changeRequestStatusAC>;
+
+export const changeRequestStatusAC = (status: boolean) => {
+    return {
+        type: 'CHANGE-REQUEST-STATUS',
+        status
+    } as const
+}
+
+// type GetCurrentIDACType = ReturnType<typeof getCurrentIDAC>;
+//
+// export const getCurrentIDAC = (id: string) => {
+//     return {
+//         type: 'GET-CURRENT-ID',
+//         id,
+//     } as const
+// }
+
+export const getProfileData = (id: string) => {
     return (dispatch: Dispatch<ActionProfileType>) => {
         usersAPI.getProfileData(id).then(response => {
             dispatch(setUserProfileAC(response.data))
         });
     }
 }
+
+export const getProfileStatusTC = (id: string | undefined) => (dispatch: Dispatch) => {
+    usersAPI.getStatus(id)
+        .then(res => {
+            dispatch(getProfileStatusAC(res.data))
+        });
+}
+
+export const updateProfileStatusTC = (status: string | null) => (dispatch: Dispatch) => {
+    dispatch(changeRequestStatusAC(true));
+    usersAPI.updateStatus(status).then(res => {
+        if (res.data.resultCode === 0) {
+            dispatch(getProfileStatusAC(status));
+            console.log('Status changed');
+        } else {
+            console.log('Wrong!!!');
+        }
+    }).finally(() => {
+        dispatch(changeRequestStatusAC(false))
+    })
+}
+

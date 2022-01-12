@@ -4,22 +4,24 @@ import Background from '../../images/monterey_bg.jpeg';
 import {ProfileInfo} from "../profileInfo/ProfileInfo";
 import {PostsContainer} from "./PostsContainer";
 import {Preloader} from "../preloader/Preloader";
+import {CircularProgress, LinearProgress} from "@mui/material";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../redux/store";
 
 
 type PropsType = {
     photoLarge: string | null
     goBack: () => void
     fullName: string
+    requestStatus: boolean
 };
 
 export const Profile = (props: PropsType) => {
 
-    // if(!props.photoLarge || null){
-    //     return <Preloader/>
-    // }
 
     return (
         <div className={s.contentBox}>
+            {props.requestStatus && <LinearProgress/>}
             <button onClick={props.goBack}>Go back</button>
             <div className={s.container}>
                 <div className={s.wrapper}>

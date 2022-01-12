@@ -27,8 +27,6 @@ class UsersAPIComponentClass extends React.Component<PropsType> {
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
     };
 
-
-
     changePage(pageNumber: number) {
         this.props.changePage(pageNumber, this.props.pageSize)
     };

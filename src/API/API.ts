@@ -8,6 +8,13 @@ const instanceAxios = axios.create({
     },
 });
 
+export type LoginDataType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    // captcha?: boolean
+}
+
 export const usersAPI = {
     getUsers(currentPage: number, pageSize: number) {
         return instanceAxios.get(
@@ -25,12 +32,31 @@ export const usersAPI = {
         return instanceAxios.delete(`follow/${userID}`)
     },
 
-    authMe() {
-        return instanceAxios.get(`auth/me`)
-    },
 
     getProfileData(id: string | undefined) {
         return instanceAxios.get(`profile/${id}`)
     },
 
+    getStatus(id: string | undefined) {
+        return instanceAxios.get(`profile/status/${id}`)
+    },
+
+    updateStatus(status: string | null) {
+        return instanceAxios.put(`profile/status`, {status})
+    },
+
+};
+
+export const authAPI = {
+    authMe() {
+        return instanceAxios.get(`auth/me`);
+    },
+
+    login(data: LoginDataType) {
+        return instanceAxios.post(`auth/login`, data);
+    },
+
+    logout() {
+        return instanceAxios.delete(`auth/login`)
+    },
 }
