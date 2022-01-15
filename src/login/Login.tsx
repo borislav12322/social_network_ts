@@ -6,11 +6,6 @@ import {loginTC} from "../redux/auth-reducer";
 import {LoginDataType} from "../API/API";
 import {AppRootStateType} from "../redux/store";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
-import ShowPasswordIcon from '../assets/images/visibility.png';
-import {ProfileContainer} from "../assets/components/profile/ProfileContainerClass";
-import {AuthRedirect} from "../HOC/AuthRedirect";
-import {Outlet} from "@mui/icons-material";
-import {CircularProgress} from "@mui/material";
 
 type PropsType = {}
 
@@ -23,7 +18,6 @@ export const Login = (props: PropsType) => {
     const passwordInputTypeChange = () => {
         setPasswordType(!passwordType);
     }
-
 
     const {
         register,
@@ -49,7 +43,6 @@ export const Login = (props: PropsType) => {
     if (myId && isLogged) {
         return <Navigate to={`/profile/${myId}`}/>
     }
-
 
     return (
         <div className={s.formContainer}>

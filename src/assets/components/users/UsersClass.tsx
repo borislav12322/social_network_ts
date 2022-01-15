@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import s from "./Users.module.scss";
 import {UsersType} from "../../../redux/users-reducer";
 import {NavLink} from "react-router-dom";
 import UserDefaultIcon from '../../images/userDefault.png'
+import {Pagination, PaginationItem, Stack} from "@mui/material";
 
 type PropsType = {
     users: Array<UsersType>
@@ -16,6 +17,16 @@ type PropsType = {
 }
 
 export const UsersClass = (props: PropsType) => {
+
+    const [page, setPage] = useState<number>(1);
+    useEffect(()=>{
+    },[])
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+        props.changePage(value)
+    };
+
     const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
 
     const pages: Array<number> = [];
@@ -24,25 +35,29 @@ export const UsersClass = (props: PropsType) => {
         pages.push(i)
     }
 
-    const onClickHandler = (pageNumber: number) => {
-        props.changePage(pageNumber)
-    }
-
     return (
         <div className={s.users}>
             <div className={s.pagination}>
                 <ul className={s.pagination__list}>
-                    {
-                        pages.map((pageNumber, i) => {
-                            return (
-                                <li key={i} onClick={() => onClickHandler(pageNumber)}
-                                    className={`${s.pagination__item}
-                                    ${props.currentPage === pageNumber && s.selectedPage}`}>
-                                    {pageNumber}
-                                </li>
-                            )
-                        })
-                    }
+
+                    <Stack spacing={2}>
+                        <Pagination
+                            count={pagesCount}
+                            onChange={handleChange}
+                        />
+                    </Stack>
+
+                    {/*{*/}
+                    {/*    pages.map((pageNumber, i) => {*/}
+                    {/*        return (*/}
+                    {/*            <li key={i} onClick={() => onClickHandler(pageNumber)}*/}
+                    {/*                className={`${s.pagination__item}*/}
+                    {/*                ${props.currentPage === pageNumber && s.selectedPage}`}>*/}
+                    {/*                {pageNumber}*/}
+                    {/*            </li>*/}
+                    {/*        )*/}
+                    {/*    })*/}
+                    {/*}*/}
                 </ul>
             </div>
             {props.users.map(item => {

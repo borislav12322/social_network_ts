@@ -15,9 +15,6 @@ export function AuthRedirect<T>(Component: ComponentType<T>) {
             return <Navigate to='/login'/>
         }
 
-
-
-
         return <Component {...props as T} />
     }
 

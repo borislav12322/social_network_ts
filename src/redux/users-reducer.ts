@@ -147,8 +147,6 @@ export const isFollowingLoadingAC = (isFetching: boolean, userID: number) => {
     } as const
 }
 
-
-
 export const getUsersThunkCreator = (currentPage: number, pageSize: number): any => {
     return (dispatch: Dispatch<ActionUsersType>) => {
 

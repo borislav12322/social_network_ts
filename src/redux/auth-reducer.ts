@@ -67,7 +67,6 @@ export const isAuthChangeAC = (isAuth: boolean) => {
     } as const
 }
 
-
 export type ChangeIsLoggedInType = ReturnType<typeof changeIsLoggedInAC>
 
 export const changeIsLoggedInAC = (isLoggedIn: boolean) => {
