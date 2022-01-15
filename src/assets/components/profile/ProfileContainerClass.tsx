@@ -10,7 +10,7 @@ import {CircularProgress} from "@mui/material";
 type PropsType = {}
 
 export const ProfileContainer = AuthRedirect((props: PropsType) => {
-    console.log('Profilecontainer')
+    console.log('Profile container');
     const dispatch = useDispatch();
 
     const myId = useSelector<AppRootStateType, number | null>(state => state.authReducer.id);

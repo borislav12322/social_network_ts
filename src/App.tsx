@@ -26,7 +26,7 @@ function App() {
 
     useEffect(() => {
         dispatch(authMeThunkCreator());
-    }, []);
+    }, [dispatch]);
     console.log();
 
     if(!isAuth){

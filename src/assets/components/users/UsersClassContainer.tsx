@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {
     ActionUsersType,
     changePageNumberAC, changePageThunkCreator, followThunkCreator, getUsersThunkCreator, setTotalUsersCountAC,
@@ -7,7 +7,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import UsersAPIComponentClass from "./UsersAPIComponentClass";
 import {AppRootStateType} from "../../../redux/store";
-import {compose, Dispatch} from "redux";
+import {Dispatch} from "redux";
 import {AuthRedirect} from "../../../HOC/AuthRedirect";
 
 export const UsersClassContainer = AuthRedirect(() => {
@@ -20,37 +20,37 @@ export const UsersClassContainer = AuthRedirect(() => {
 
     const dispatch = useDispatch<Dispatch<ActionUsersType>>();
 
-    const follow = (followed: boolean, userID: number) => {
+    const follow = useCallback((followed: boolean, userID: number) => {
         dispatch(followThunkCreator(followed, userID));
-    }
+    }, [dispatch])
 
-    const unFollow = (followed: boolean, userID: number) => {
+    const unFollow = useCallback((followed: boolean, userID: number) => {
         dispatch(unfollowThunkCreator(followed, userID));
-    }
+    }, [dispatch])
 
-    const setUsers = (users: Array<UsersType>) => {
+    const setUsers = useCallback((users: Array<UsersType>) => {
         dispatch(setUsersAC(users));
-    }
+    }, [])
 
-    const changePageNumber = (pageNumber: number) => {
+    const changePageNumber = useCallback((pageNumber: number) => {
         dispatch(changePageNumberAC(pageNumber));
-    }
+    }, [])
 
-    const setTotalUsersCount = (totalCount: number) => {
+    const setTotalUsersCount = useCallback((totalCount: number) => {
         dispatch(setTotalUsersCountAC(totalCount));
-    }
+    }, [])
 
-    const toggleIsFetching = (value: boolean) => {
+    const toggleIsFetching = useCallback((value: boolean) => {
         dispatch(toggleIsFetchingAC(value));
-    }
+    }, [])
 
-    const getUsers = (currentPage: number, pageSize: number) => {
+    const getUsers = useCallback((currentPage: number, pageSize: number) => {
         dispatch(getUsersThunkCreator(currentPage, pageSize))
-    }
+    }, [])
 
-    const changePage = (pageNumber: number, pageSize: number) => {
+    const changePage = useCallback((pageNumber: number, pageSize: number) => {
         dispatch(changePageThunkCreator(pageNumber, pageSize))
-    }
+    }, [])
 
     return (
         <>

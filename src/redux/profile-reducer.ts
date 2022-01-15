@@ -24,6 +24,7 @@ export type ProfilesPageType = {
     profileData: ProfileDataType
     status: string | null
     requestStatus: boolean,
+    editModeStatus: boolean,
 };
 
 export type ActionProfileType =
@@ -32,6 +33,7 @@ export type ActionProfileType =
     | SetUserProfileAC
     | GetProfileStatusACType
     | ChangeRequestStatusACType
+    | ChangeEditModeStatusACType
 
 const initialState: ProfilesPageType = {
     messageForNewPost: '',
@@ -47,6 +49,7 @@ const initialState: ProfilesPageType = {
     },
     status: '',
     requestStatus: false,
+    editModeStatus: false
 }
 
 export const profileReducer = (state: ProfilesPageType = initialState, action: ActionProfileType): ProfilesPageType => {
@@ -61,6 +64,8 @@ export const profileReducer = (state: ProfilesPageType = initialState, action: A
             return {...state, status: action.statusText}
         case 'CHANGE-REQUEST-STATUS':
             return {...state, requestStatus: action.status}
+        case 'CHANGE-EDIT-MODE':
+            return {...state, editModeStatus: action.editModeStatus}
 
         default:
             return state
@@ -112,6 +117,15 @@ export const changeRequestStatusAC = (status: boolean) => {
     } as const
 }
 
+export type ChangeEditModeStatusACType = ReturnType<typeof changeEditModeStatusAC>;
+
+export const changeEditModeStatusAC = (editModeStatus: boolean) => {
+    return {
+        type: 'CHANGE-EDIT-MODE',
+        editModeStatus,
+    } as const
+}
+
 // type GetCurrentIDACType = ReturnType<typeof getCurrentIDAC>;
 //
 // export const getCurrentIDAC = (id: string) => {
@@ -141,6 +155,7 @@ export const updateProfileStatusTC = (status: string | null) => (dispatch: Dispa
     usersAPI.updateStatus(status).then(res => {
         if (res.data.resultCode === 0) {
             dispatch(getProfileStatusAC(status));
+            dispatch(changeEditModeStatusAC(false))
             console.log('Status changed');
         } else {
             console.log('Wrong!!!');

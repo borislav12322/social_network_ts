@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import s from "./Users.module.scss";
 import {UsersType} from "../../../redux/users-reducer";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import UserDefaultIcon from '../../images/userDefault.png'
-import {Pagination, PaginationItem, Stack} from "@mui/material";
+import {Pagination, Stack} from "@mui/material";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../redux/store";
 
 type PropsType = {
     users: Array<UsersType>
@@ -16,15 +18,14 @@ type PropsType = {
     follow: (followed: boolean, userID: number) => void
 }
 
-export const UsersClass = (props: PropsType) => {
+export const UsersClass = React.memo((props: PropsType) => {
 
     const [page, setPage] = useState<number>(1);
-    useEffect(()=>{
-    },[])
+    const currentPage = useSelector<AppRootStateType, number>(state => state.usersReducer.currentPage);
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
-        props.changePage(value)
+        props.changePage(value);
     };
 
     const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -32,17 +33,21 @@ export const UsersClass = (props: PropsType) => {
     const pages: Array<number> = [];
 
     for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i)
+        pages.push(i);
     }
+    console.log(`current page is ${currentPage}`)
 
     return (
+
         <div className={s.users}>
+            {console.log(page)}
             <div className={s.pagination}>
                 <ul className={s.pagination__list}>
 
                     <Stack spacing={2}>
                         <Pagination
                             count={pagesCount}
+                            page={currentPage}
                             onChange={handleChange}
                         />
                     </Stack>
@@ -102,4 +107,4 @@ export const UsersClass = (props: PropsType) => {
             <button className={s.moreBtn}>Show more</button>
         </div>
     )
-}
+})
