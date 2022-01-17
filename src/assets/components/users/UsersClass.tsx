@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
 import s from "./Users.module.scss";
-import {UsersType} from "../../../redux/users-reducer";
+import {changePageThunkCreator, UsersType} from "../../../redux/users-reducer";
 import {NavLink, useNavigate} from "react-router-dom";
 import UserDefaultIcon from '../../images/userDefault.png'
 import {Pagination, Stack} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
 
 type PropsType = {
@@ -16,11 +16,15 @@ type PropsType = {
     changePage: (pageNumber: number) => void
     unFollow: (followed: boolean, userID: number) => void
     follow: (followed: boolean, userID: number) => void
+    changePageSize: (value: number) => void
 }
 
 export const UsersClass = React.memo((props: PropsType) => {
 
-    const [page, setPage] = useState<number>(1);
+    const dispatch = useDispatch();
+    let pageSizeInitValue = useSelector<AppRootStateType, number>(state => state.usersReducer.pageSize);
+    let [page, setPage] = useState<number>(1);
+    let [pageSize, setPageSize] = useState<number>(pageSizeInitValue);
     const currentPage = useSelector<AppRootStateType, number>(state => state.usersReducer.currentPage);
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -35,12 +39,16 @@ export const UsersClass = React.memo((props: PropsType) => {
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
-    console.log(`current page is ${currentPage}`)
+
+    const onClickHandler = () => {
+        // setPage(page = page + 1)
+        // setPageSize(pageSize = pageSize + pageSizeInitValue)
+        // dispatch(changePageThunkCreator(page, pageSize))
+    }
 
     return (
 
         <div className={s.users}>
-            {console.log(page)}
             <div className={s.pagination}>
                 <ul className={s.pagination__list}>
 
@@ -104,7 +112,7 @@ export const UsersClass = React.memo((props: PropsType) => {
                     </div>
                 )
             })}
-            <button className={s.moreBtn}>Show more</button>
+            <button onClick={onClickHandler} className={s.moreBtn}>Show more</button>
         </div>
     )
 })

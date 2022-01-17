@@ -7,6 +7,7 @@ import {Preloader} from "../preloader/Preloader";
 import {CircularProgress, LinearProgress} from "@mui/material";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
+import {useParams} from "react-router-dom";
 
 
 type PropsType = {
@@ -18,6 +19,15 @@ type PropsType = {
 
 export const Profile = (props: PropsType) => {
 
+    const myID = useSelector<AppRootStateType, number | null>(state => state.authReducer.id);
+    let {id} = useParams();
+
+
+    const showPost = () => {
+      if(myID?.toString() === id){
+          return <PostsContainer/>
+      }
+    }
 
     return (
         <div className={s.contentBox}>
@@ -37,9 +47,10 @@ export const Profile = (props: PropsType) => {
                     />
 
                     {/*<Posts/>*/}
+                    {showPost()}
 
 
-                    <PostsContainer/>
+
                 </div>
             </div>
         </div>

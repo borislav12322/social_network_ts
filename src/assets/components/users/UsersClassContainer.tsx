@@ -1,8 +1,16 @@
 import React, {useCallback} from "react";
 import {
     ActionUsersType,
-    changePageNumberAC, changePageThunkCreator, followThunkCreator, getUsersThunkCreator, setTotalUsersCountAC,
-    setUsersAC, toggleIsFetchingAC, unfollowThunkCreator, UsersType,
+    changePageNumberAC,
+    changePageSizeAC,
+    changePageThunkCreator,
+    followThunkCreator,
+    getUsersThunkCreator,
+    setTotalUsersCountAC,
+    setUsersAC,
+    toggleIsFetchingAC,
+    unfollowThunkCreator,
+    UsersType,
 } from "../../../redux/users-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import UsersAPIComponentClass from "./UsersAPIComponentClass";
@@ -12,11 +20,13 @@ import {AuthRedirect} from "../../../HOC/AuthRedirect";
 
 export const UsersClassContainer = AuthRedirect(() => {
     const users = useSelector<AppRootStateType, Array<UsersType>>(state => state.usersReducer.users);
-    const pageSize = useSelector<AppRootStateType, number>(state => state.usersReducer.pageSize);
+    let pageSize = useSelector<AppRootStateType, number>(state => state.usersReducer.pageSize);
     const totalUsersCount = useSelector<AppRootStateType, number>(state => state.usersReducer.totalUsersCount);
     const currentPage = useSelector<AppRootStateType, number>(state => state.usersReducer.currentPage);
     const isFetching = useSelector<AppRootStateType, boolean>(state => state.usersReducer.isFetching);
     const followingInProgress = useSelector<AppRootStateType, Array<number>>(state => state.usersReducer.followingInProgress);
+
+    console.log(pageSize)
 
     const dispatch = useDispatch<Dispatch<ActionUsersType>>();
 
@@ -52,6 +62,10 @@ export const UsersClassContainer = AuthRedirect(() => {
         dispatch(changePageThunkCreator(pageNumber, pageSize))
     }, [])
 
+    const changePageSize = (value: number) => {
+        dispatch(changePageSizeAC(value))
+    }
+
     return (
         <>
             <UsersAPIComponentClass
@@ -69,6 +83,7 @@ export const UsersClassContainer = AuthRedirect(() => {
                 toggleIsFetching={toggleIsFetching}
                 getUsers={getUsers}
                 changePage={changePage}
+                changePageSize={changePageSize}
             />
         </>
     )

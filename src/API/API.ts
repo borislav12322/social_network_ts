@@ -32,7 +32,6 @@ export const usersAPI = {
         return instanceAxios.delete(`follow/${userID}`)
     },
 
-
     getProfileData(id: string | undefined) {
         return instanceAxios.get(`profile/${id}`)
     },
@@ -44,7 +43,6 @@ export const usersAPI = {
     updateStatus(status: string | null) {
         return instanceAxios.put(`profile/status`, {status})
     },
-
 };
 
 export const authAPI = {

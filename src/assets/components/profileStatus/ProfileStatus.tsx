@@ -1,4 +1,12 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent,FocusEvent, useEffect, useState} from "react";
+import React, {
+    ChangeEvent,
+    DetailedHTMLProps,
+    InputHTMLAttributes,
+    KeyboardEvent,
+    FocusEvent,
+    useEffect,
+    useState
+} from "react";
 import s from './ProfileStatus.module.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../redux/store";
@@ -36,9 +44,9 @@ export const ProfileStatus = ({onChange, ...props}: PropsType) => {
         // if(e.currentTarget.className !== `${s.statusRow}`){
         //     dispatch(changeEditModeStatusAC(false))
         // }
-        setTimeout(()=>{
+        setTimeout(() => {
             dispatch(changeEditModeStatusAC(false))
-        },500)
+        }, 500)
     };
 
     const onButtonClickHandler = () => {

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.scss';
 import {Sidebar} from "./assets/components/sidebar/Sidebar";
-import {BrowserRouter, Route, Routes, Outlet} from "react-router-dom";
+import {BrowserRouter, Route, Routes, Outlet, Navigate} from "react-router-dom";
 import {Messages} from "./assets/components/messages/Messages";
 import {UsersClassContainer} from "./assets/components/users/UsersClassContainer";
 import {ProfileContainer} from "./assets/components/profile/ProfileContainerClass";
@@ -21,6 +21,7 @@ function App() {
 
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.authReducer.isAuth);
     const isLogged = useSelector<AppRootStateType, boolean>(state => state.authReducer.isLoggedIn);
+    const myId = useSelector<AppRootStateType, number|null>(state => state.authReducer.id);
 
     isLogged ? console.log(`IsLogged is ${isLogged}`) : console.log(`IsLogged is ${isLogged}`);
 
@@ -29,7 +30,7 @@ function App() {
     }, [dispatch]);
     console.log();
 
-    if(!isAuth){
+    if (!isAuth) {
         return <div><CircularProgress/></div>
     }
 
@@ -50,6 +51,11 @@ function App() {
                             />
 
                             <Route
+                                path={'/'}
+                                element={<Navigate to={`/profile/${myId}`}/>}
+                            />
+
+                            <Route
                                 path={'/messages'}
                                 element={<Messages/>}
                             />
@@ -63,6 +69,9 @@ function App() {
                                 path={'/login'}
                                 element={<Login/>}
                             />
+
+                            <Route path={'/404'} element={<h1>404: PAGE NOT FOUND</h1>}/>
+                            <Route path={'*'} element={<Navigate to={'/404'}/>}/>
 
                             {/*<Route*/}
                             {/*    path={'/login'}*/}

@@ -16,13 +16,14 @@ type PropsType = {}
 export const Sidebar = (props: PropsType) =>{
     const dispatch = useDispatch();
     const id = useSelector<AppRootStateType, number|null>(state => state.authReducer.id);
+
     const sideBarData = [
         {icon: ProfileImg, title: 'Profile', navTitle: '/profile/' + id || ''},
         {icon: MessagesImg, title: 'Messages', navTitle: '/messages'},
         {icon: '', title: 'Users', navTitle: '/users'},
-        {icon: NewsImg, title: 'News', navTitle: ''},
-        {icon: MusicImg, title: 'Music', navTitle: ''},
-        {icon: SettingsImg, title: 'Settings', navTitle: ''},
+        {icon: NewsImg, title: 'News', navTitle: '/news'},
+        {icon: MusicImg, title: 'Music', navTitle: '/music'},
+        {icon: SettingsImg, title: 'Settings', navTitle: '/settings'},
     ]
 
     return(
@@ -43,10 +44,13 @@ export const Sidebar = (props: PropsType) =>{
                             </li>
                         )
                     })}
-
-                    <li className={`${s.sidebarItem}  ${s.friendsSection}`}>
+                    {/*{isLoading ? <span>!!!</span> : <li className={`${s.friendsSection}`}>*/}
+                    {/*    <FriendSidebarItem/>*/}
+                    {/*</li>}*/}
+                    <li className={`${s.friendsSection}`}>
                         <FriendSidebarItem/>
                     </li>
+
 
                 </ul>
             </div>

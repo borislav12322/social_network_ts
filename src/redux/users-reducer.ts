@@ -1,7 +1,5 @@
 import {usersAPI} from "../API/API";
 import {Dispatch} from "redux";
-import {AppRootStateType} from "./store";
-import {ThunkAction} from "redux-thunk";
 
 type LocationType = {
     country: string,
@@ -28,6 +26,7 @@ export type InitialStateType = {
     currentPage: number
     isFetching: boolean
     followingInProgress: Array<number>
+    pagesCount: number
 }
 
 let initialState = {
@@ -37,6 +36,7 @@ let initialState = {
     currentPage: 1,
     isFetching: false,
     followingInProgress: [],
+    pagesCount: 0,
 }
 
 export type ActionUsersType =
@@ -46,7 +46,9 @@ export type ActionUsersType =
     ChangePageNumberACType |
     SetTotalUsersCountACType |
     ToggleIsFetchingACType |
-    IsFollowingLoadingACType;
+    IsFollowingLoadingACType |
+    GetPagesCountACType |
+    ChangePageSizeACType;
 
 export const usersReducer = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {
     switch (action.type) {
@@ -75,6 +77,12 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
                     ? [...state.followingInProgress, action.userID]
                     : state.followingInProgress.filter(id => id !== action.userID)
             }
+        case 'GET-PAGES-COUNT':
+            return {
+                ...state, pagesCount: action.pagesCount
+            }
+        case 'CHANGE-PAGE-SIZE':
+            return {...state, pageSize: action.pageSize}
 
         default:
             return state
@@ -101,7 +109,7 @@ export const unFollowAC = (followed: boolean, userID: number) => {
     } as const
 }
 
-type SetUsersACType = ReturnType<typeof setUsersAC>
+export type SetUsersACType = ReturnType<typeof setUsersAC>
 
 export const setUsersAC = (users: Array<UsersType>) => {
     return {
@@ -119,7 +127,7 @@ export const changePageNumberAC = (pageNumber: number) => {
     } as const
 }
 
-type SetTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
+export type SetTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
 
 export const setTotalUsersCountAC = (totalCount: number) => {
     return {
@@ -147,12 +155,27 @@ export const isFollowingLoadingAC = (isFetching: boolean, userID: number) => {
     } as const
 }
 
+type ChangePageSizeACType = ReturnType<typeof changePageSizeAC>
+
+export const changePageSizeAC = (pageSize: number) => {
+    return {
+        type: 'CHANGE-PAGE-SIZE',
+        pageSize,
+    } as const
+}
+
+export type GetPagesCountACType = ReturnType<typeof getPagesCountAC>;
+
+export const getPagesCountAC = (pagesCount: number) => {
+    return {
+        type: 'GET-PAGES-COUNT',
+        pagesCount,
+    } as const
+}
+
 export const getUsersThunkCreator = (currentPage: number, pageSize: number): any => {
     return (dispatch: Dispatch<ActionUsersType>) => {
-
-
         dispatch(toggleIsFetchingAC(true));
-
         usersAPI.getUsers(currentPage, pageSize).then(data => {
             dispatch(toggleIsFetchingAC(false));
             dispatch(setUsersAC(data.items));

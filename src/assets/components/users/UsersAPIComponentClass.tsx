@@ -19,6 +19,7 @@ type PropsType = {
     toggleIsFetching: (value: boolean) => void
     getUsers: (currentPage: number, pageSize: number) => void
     changePage: (currentPage: number, pageSize: number) => void
+    changePageSize:(value: number) => void
 }
 
 class UsersAPIComponentClass extends React.Component<PropsType> {
@@ -28,7 +29,7 @@ class UsersAPIComponentClass extends React.Component<PropsType> {
     };
 
     changePage(pageNumber: number) {
-        this.props.changePage(pageNumber, this.props.pageSize)
+        this.props.changePage(pageNumber, this.props.pageSize);
     };
 
     render() {
@@ -49,6 +50,7 @@ class UsersAPIComponentClass extends React.Component<PropsType> {
                             changePage={onClickHandler}
                             unFollow={this.props.unFollow}
                             follow={this.props.follow}
+                            changePageSize={this.props.changePageSize}
                 />
             </>
         )

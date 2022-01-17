@@ -17,6 +17,7 @@ export const Header = (props: PropsType) => {
     const dispatch = useDispatch();
     const isLogged = useSelector<AppRootStateType, boolean>(state => state.authReducer.isLoggedIn);
     const isAuth = isLogged ? props.login :(<NavLink to={'/login'}>Login</NavLink>);
+    const myId = useSelector<AppRootStateType, number | null>(state => state.authReducer.id);
 
     const logout = () => {
         dispatch(logoutTC())
@@ -27,9 +28,9 @@ export const Header = (props: PropsType) => {
             <div className={s.container}>
                 <div className={s.wrapper}>
 
-                    <a className={s.logoLink} href="/">
+                    <NavLink className={s.logoLink} to={`/profile/${myId}`}>
                         <img className={s.logo} src={Logo} alt="logo"/>
-                    </a>
+                    </NavLink>
                     <span>{isAuth}</span>
                     {isLogged && <button onClick={logout}>Logout</button>}
                 </div>
